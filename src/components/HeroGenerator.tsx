@@ -240,8 +240,8 @@
   },
  ];
 
- const CANVAS_WIDTH = 1200;
- const CANVAS_HEIGHT = 630;
+const CANVAS_WIDTH = 1200;
+const CANVAS_HEIGHT = 630;
 
  export default function HeroGenerator() {
    const [brandKey, setBrandKey] = useState<keyof typeof BRANDS>("maxim");
@@ -257,6 +257,7 @@
   const [textColorMode, setTextColorMode] = useState<"auto" | "light" | "dark">(
     "auto",
   );
+  const [renderScale, setRenderScale] = useState(2);
 
    const canvasRef = useRef<HTMLCanvasElement | null>(null);
    const logoRef = useRef<HTMLImageElement | null>(null);
@@ -280,8 +281,10 @@
      const ctx = canvas.getContext("2d");
      if (!ctx) return;
 
-     canvas.width = CANVAS_WIDTH;
-     canvas.height = CANVAS_HEIGHT;
+     const pixelRatio = Math.max(1, Math.min(renderScale, 4));
+     canvas.width = CANVAS_WIDTH * pixelRatio;
+     canvas.height = CANVAS_HEIGHT * pixelRatio;
+     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
      const rng = mulberry32(seed);
 
      theme.draw(ctx, CANVAS_WIDTH, CANVAS_HEIGHT, scheme, rng);
@@ -333,6 +336,7 @@
      textColor,
      theme,
      title,
+     renderScale,
    ]);
 
    useEffect(() => {
@@ -500,6 +504,26 @@
                     }`}
                   >
                     {mode === "auto" ? "Auto" : mode === "light" ? "Light" : "Dark"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-emerald-950">Quality</label>
+              <div className="mt-2 grid grid-cols-3 gap-3 text-xs font-semibold">
+                {[1, 2, 3].map((scale) => (
+                  <button
+                    key={scale}
+                    type="button"
+                    onClick={() => setRenderScale(scale)}
+                    className={`rounded-xl border px-3 py-2 transition ${
+                      renderScale === scale
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-900"
+                        : "border-emerald-950/10 bg-white text-emerald-900/70 hover:border-emerald-950/30"
+                    }`}
+                  >
+                    {scale}x
                   </button>
                 ))}
               </div>
