@@ -356,11 +356,12 @@ const CANVAS_HEIGHT = 630;
      draw();
    }, [draw]);
 
-   const handleDownload = () => {
+  const handleDownload = () => {
      const canvas = canvasRef.current;
      if (!canvas) return;
      const link = document.createElement("a");
-     link.download = `hero-${brandKey}-${themeId}.png`;
+    const titleSlug = slugify(title) || "hero-image";
+    link.download = `${titleSlug}-${brandKey}-${themeId}.png`;
      link.href = canvas.toDataURL("image/png");
      link.click();
    };
@@ -655,3 +656,11 @@ const CANVAS_HEIGHT = 630;
    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
    return luminance < 0.5;
  }
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "")
+    .slice(0, 60);
+}
