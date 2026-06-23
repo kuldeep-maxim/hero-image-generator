@@ -9,11 +9,12 @@ export default function Home() {
             Hero Image Generator
           </p>
           <h1 className="text-3xl font-semibold text-emerald-950 sm:text-4xl">
-            Build abstract hero images with branded color themes.
+            Build branded 16:9 hero images with AI isometric illustrations.
           </h1>
           <p className="max-w-2xl text-sm text-emerald-900/70 sm:text-base">
-            Pick a brand, choose one of two color schemes, select a theme, and
-            generate a unique abstract pattern without any LLMs.
+            Generate a per-topic isometric line illustration with Gemini, then
+            overlay the logo, title and brand accents — or fall back to the
+            abstract pattern themes.
           </p>
         </header>
 
